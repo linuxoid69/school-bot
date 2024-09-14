@@ -118,6 +118,10 @@ func CreateMessage(data []byte) (string, error) {
 		time.Now().Format("02.01.2006"),
 		"========================================"))
 
+	if len(grades.Data.Items) == 0 {
+		return "", nil
+	}
+
 	for _, item := range grades.Data.Items {
 		if item.EstimateComment == nil {
 			item.EstimateComment = ""
