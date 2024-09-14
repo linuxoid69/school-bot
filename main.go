@@ -31,8 +31,6 @@ type Site struct {
 	JWT        string
 	URL        string
 	EucationID string
-	DateFrom   string
-	DateTo     string
 }
 
 type Message struct {
@@ -42,27 +40,33 @@ type Message struct {
 }
 
 func main() {
+	var messageError string
 	data, err := GetGrades(
 		&Site{
-			JWT:        os.Getenv("JWT"),
-			URL:        os.Getenv("URL"),
-			EucationID: os.Getenv("EUCATION_ID"),
-			DateFrom:   os.Getenv("DATE_FROM"),
-			DateTo:     os.Getenv("DATE_TO")},
+			JWT:        os.Getenv("SCHOOL_JWT"),
+			URL:        os.Getenv("SCHOOL_URL"),
+			EucationID: os.Getenv("SCHOOL_EUCATION_ID"),
+		},
 	)
 	if err != nil {
 		slog.Warn("Error getting grades", "error", err)
+		messageError = "Ошибка получения оценок"
 	}
 
 	messageString, err := CreateMessage(data)
 	if err != nil {
 		slog.Warn("Error creating message", "error", err)
+		messageError = "Ошибка создания сообщения"
+	}
+
+	if messageError != "" {
+		messageString = messageError
 	}
 
 	mesg := Message{
 		Text:   messageString,
-		ChatID: os.Getenv("CHAT_ID"),
-		Token:  os.Getenv("TOKEN"),
+		ChatID: os.Getenv("SCHOOL_CHAT_ID"),
+		Token:  os.Getenv("SCHOOL_TOKEN"),
 	}
 
 	err = mesg.SendGrades()
