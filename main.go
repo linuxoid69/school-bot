@@ -9,8 +9,10 @@ import (
 
 func main() {
 	checker.CheckEnvVars()
+
 	cron.RunTask()
-	for true {
+
+	for {
 		time.Sleep(time.Second * 1)
 	}
 }
