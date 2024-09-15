@@ -1,0 +1,13 @@
+[Unit]
+Description=school notificator
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/school/school.env
+ExecStart=/usr/local/bin/school
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
