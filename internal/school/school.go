@@ -29,7 +29,7 @@ type Site struct {
 }
 
 func GetGrades(site *Site) ([]byte, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s", site.URL), nil)
+	req, err := http.NewRequest(http.MethodGet, site.URL, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func GetGrades(site *Site) ([]byte, error) {
 	req.Header.Set("Cookie", fmt.Sprintf("X-JWT-Token=%s", site.JWT))
 
 	q := req.URL.Query()
-	q.Add("p_educations[]", fmt.Sprintf("%s", site.EucationID))
+	q.Add("p_educations[]", site.EucationID)
 	q.Add("p_date_from", todayDate)
 	q.Add("p_date_to", todayDate)
 	req.URL.RawQuery = q.Encode()

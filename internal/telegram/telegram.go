@@ -44,7 +44,9 @@ func (m *Message) SendGrades() error {
 func CreateMessage(data []byte) (string, error) {
 	var grades school.Grades
 
-	json.Unmarshal(data, &grades)
+	if err := json.Unmarshal(data, &grades); err != nil {
+		return "", err
+	}
 
 	var sb strings.Builder
 
