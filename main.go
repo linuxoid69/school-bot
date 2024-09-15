@@ -4,11 +4,14 @@ import (
 	"log/slog"
 	"os"
 
+	"git.my-itclub.ru/bots/school/internal/checker"
 	"git.my-itclub.ru/bots/school/internal/school"
 	tg "git.my-itclub.ru/bots/school/internal/telegram"
 )
 
 func main() {
+	checker.CheckEnvVars()
+
 	var messageError, message string
 
 	grades, err := school.GetGrades(
