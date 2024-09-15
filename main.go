@@ -9,9 +9,9 @@ import (
 )
 
 func main() {
-	var messageError, messageString string
+	var messageError, message string
 
-	data, err := school.GetGrades(
+	grades, err := school.GetGrades(
 		&school.Site{
 			JWT:        os.Getenv("SCHOOL_JWT"),
 			URL:        os.Getenv("SCHOOL_URL"),
@@ -20,21 +20,23 @@ func main() {
 	)
 	if err != nil {
 		slog.Warn("Error getting grades", "error", err)
+
 		messageError = "Ошибка получения оценок"
 	}
 
-	messageString, err = tg.CreateMessage(data)
+	message, err = tg.CreateMessage(grades)
 	if err != nil {
 		slog.Warn("Error creating message", "error", err)
+
 		messageError = "Ошибка создания сообщения"
 	}
 
 	if messageError != "" {
-		messageString = messageError
+		message = messageError
 	}
 
 	mesg := tg.Message{
-		Text:   messageString,
+		Text:   message,
 		ChatID: os.Getenv("SCHOOL_CHAT_ID"),
 		Token:  os.Getenv("SCHOOL_TOKEN"),
 	}
