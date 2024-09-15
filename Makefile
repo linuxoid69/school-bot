@@ -12,3 +12,6 @@ build_darwin:
 
 test:
 	go test -v ./...
+
+lint:
+	golangci-lint run
