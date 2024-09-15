@@ -12,6 +12,7 @@ var (
 		"SCHOOL_EUCATION_ID",
 		"SCHOOL_TOKEN",
 		"SCHOOL_CHAT_ID",
+		"SCHOOL_CRON",
 	}
 )
 

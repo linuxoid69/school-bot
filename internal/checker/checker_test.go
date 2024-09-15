@@ -25,6 +25,7 @@ func TestCheckEnvVars(t *testing.T) {
 				"SCHOOL_CHAT_ID":     "1234",
 				"SCHOOL_EUCATION_ID": "1234",
 				"SCHOOL_TOKEN":       "1234",
+				"SCHOOL_CRON":        "* * * * *",
 			},
 		},
 		{
@@ -36,6 +37,7 @@ func TestCheckEnvVars(t *testing.T) {
 				"SCHOOL_CHAT_ID":     "",
 				"SCHOOL_EUCATION_ID": "",
 				"SCHOOL_TOKEN":       "",
+				"SCHOOL_CRON":        "",
 			},
 		},
 	}
