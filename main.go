@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log/slog"
 	"time"
 
 	"git.my-itclub.ru/bots/school/internal/checker"
@@ -8,6 +9,8 @@ import (
 )
 
 func main() {
+	slog.Info("Start bot school")
+
 	checker.CheckEnvVars()
 
 	cron.RunTask()
