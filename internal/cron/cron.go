@@ -16,7 +16,7 @@ func RunTask() {
 	c := cron.New()
 	cron.WithLocation(l)
 
-	c.AddFunc(os.Getenv("SCHOOL_CRON"), func() {
+	_, err := c.AddFunc(os.Getenv("SCHOOL_CRON"), func() {
 		var messageError, message string
 
 		grades, err := school.GetGrades(
@@ -55,6 +55,9 @@ func RunTask() {
 
 		slog.Info("Cron task completed")
 	})
+	if err != nil {
+		slog.Warn("Error adding cron task", "error", err)
+	}
 
 	c.Start()
 }

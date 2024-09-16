@@ -13,6 +13,6 @@ func main() {
 	cron.RunTask()
 
 	for {
-		time.Sleep(time.Second * 1)
+		time.Sleep(time.Millisecond * 500)
 	}
 }
