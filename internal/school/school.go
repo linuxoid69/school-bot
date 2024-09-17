@@ -26,6 +26,8 @@ type Site struct {
 	JWT        string
 	URL        string
 	EucationID string
+	DateFrom   string
+	DateTo     string
 }
 
 func GetGrades(site *Site) ([]byte, error) {
@@ -36,12 +38,17 @@ func GetGrades(site *Site) ([]byte, error) {
 
 	todayDate := time.Now().Format("02.01.2006")
 
+	if site.DateFrom == "" && site.DateTo == "" {
+		site.DateFrom = todayDate
+		site.DateTo = todayDate
+	}
+
 	req.Header.Set("Cookie", fmt.Sprintf("X-JWT-Token=%s", site.JWT))
 
 	q := req.URL.Query()
 	q.Add("p_educations[]", site.EucationID)
-	q.Add("p_date_from", todayDate)
-	q.Add("p_date_to", todayDate)
+	q.Add("p_date_from", site.DateFrom)
+	q.Add("p_date_to", site.DateTo)
 	req.URL.RawQuery = q.Encode()
 
 	resp, err := http.DefaultClient.Do(req)
