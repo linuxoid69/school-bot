@@ -1,0 +1,8 @@
+Main:
+  files:
+  - $all
+  - "!$test"
+  allow:
+  - $gostd
+  - git.my-itclub.ru/bots/school/internal/school
+  - git.my-itclub.ru/bots/school/internal/telegram
