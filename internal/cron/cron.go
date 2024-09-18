@@ -16,7 +16,7 @@ func RunTask() {
 	c := cron.New()
 	cron.WithLocation(l)
 
-	_, err := c.AddFunc(os.Getenv("SCHOOL_CRON"), func() {
+	_, err := c.AddFunc(os.Getenv("SCHOOL_CRON_WORK_WEEK"), func() {
 		var messageError, message string
 
 		grades, err := school.GetGrades(
