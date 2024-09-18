@@ -1,7 +1,7 @@
 package checker
 
 import (
-	"log/slog"
+	"fmt"
 	"os"
 )
 
@@ -16,14 +16,12 @@ var (
 	}
 )
 
-func CheckEnvVars() bool {
+func CheckEnvVars() error {
 	for _, v := range envVars {
 		if os.Getenv(v) == "" {
-			slog.Error("variable " + v + " is not set")
-
-			return false
+			return fmt.Errorf("variable " + v + " is not set")
 		}
 	}
 
-	return true
+	return nil
 }

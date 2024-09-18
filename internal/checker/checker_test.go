@@ -14,11 +14,11 @@ func TestCheckEnvVars(t *testing.T) {
 	tests := []struct {
 		name    string
 		envVars map[string]string
-		want    bool
+		wantErr bool
 	}{
 		{
-			name: "CheckEnvVars",
-			want: true,
+			name:    "CheckEnvVars",
+			wantErr: false,
 			envVars: map[string]string{
 				"SCHOOL_JWT":            "123",
 				"SCHOOL_URL":            "https://example.com",
@@ -29,8 +29,8 @@ func TestCheckEnvVars(t *testing.T) {
 			},
 		},
 		{
-			name: "CheckEnvVars not set",
-			want: false,
+			name:    "CheckEnvVars not set",
+			wantErr: true,
 			envVars: map[string]string{
 				"SCHOOL_JWT":            "",
 				"SCHOOL_URL":            "",
@@ -45,8 +45,11 @@ func TestCheckEnvVars(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			EnvVars(t, tt.envVars)
 
-			if got := CheckEnvVars(); got != tt.want {
-				t.Errorf("CheckEnvVars() = %v, want %v", got, tt.want)
+			err := CheckEnvVars()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("CreateMessage() error = %v, wantErr %v", err, tt.wantErr)
+
+				return
 			}
 		})
 	}

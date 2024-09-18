@@ -37,7 +37,11 @@ func main() {
 	} else {
 		slog.Info("Start bot school")
 
-		checker.CheckEnvVars()
+		if err := checker.CheckEnvVars(); err != nil {
+			slog.Error("Error checking env vars", "error", err)
+
+			return
+		}
 
 		cron.RunTask()
 
