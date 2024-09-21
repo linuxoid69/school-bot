@@ -1,6 +1,7 @@
 package school
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -31,7 +32,10 @@ type Site struct {
 }
 
 func GetGrades(site *Site) ([]byte, error) {
-	req, err := http.NewRequest(http.MethodGet, site.URL, nil)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, site.URL, nil)
 	if err != nil {
 		return nil, err
 	}
