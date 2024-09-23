@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"unicode"
 
 	"git.my-itclub.ru/bots/school/internal/school"
 )
@@ -74,6 +75,33 @@ func CreateMessage(data []byte) (string, error) {
 		if err != nil {
 			return "", err
 		}
+	}
+
+	return sb.String(), nil
+}
+
+func CreateWeekReport(fromDate, toDate string, data []byte) (string, error) {
+	var grades school.Grades
+
+	if err := json.Unmarshal(data, &grades); err != nil {
+		return "", err
+	}
+
+	weekGrades := make(map[string]string)
+	for _, item := range grades.Data.Items {
+		if unicode.IsDigit([]rune(item.EstimateValueName)[0]) {
+			weekGrades[item.SubjectName] += item.EstimateValueName + ","
+		}
+	}
+
+	var sb strings.Builder
+
+	sb.WriteString(fmt.Sprintf(
+		"Отчет за неделю: %s-%s\n%s\n", fromDate, toDate,
+		"========================================"))
+
+	for subject, grade := range weekGrades {
+		sb.WriteString(fmt.Sprintf("%s: %s\n", subject, grade))
 	}
 
 	return sb.String(), nil
