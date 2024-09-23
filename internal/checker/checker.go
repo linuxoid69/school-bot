@@ -1,7 +1,7 @@
 package checker
 
 import (
-	"log/slog"
+	"fmt"
 	"os"
 )
 
@@ -12,18 +12,16 @@ var (
 		"SCHOOL_EUCATION_ID",
 		"SCHOOL_TOKEN",
 		"SCHOOL_CHAT_ID",
-		"SCHOOL_CRON",
+		"SCHOOL_CRON_WORK_WEEK",
 	}
 )
 
-func CheckEnvVars() bool {
+func CheckEnvVars() error {
 	for _, v := range envVars {
 		if os.Getenv(v) == "" {
-			slog.Error("variable " + v + " is not set")
-
-			return false
+			return fmt.Errorf("variable " + v + " is not set")
 		}
 	}
 
-	return true
+	return nil
 }

@@ -5,8 +5,6 @@ import (
 	"os"
 	"time"
 
-	"git.my-itclub.ru/bots/school/internal/school"
-	tg "git.my-itclub.ru/bots/school/internal/telegram"
 	"github.com/robfig/cron/v3"
 )
 
@@ -16,47 +14,14 @@ func RunTask() {
 	c := cron.New()
 	cron.WithLocation(l)
 
-	_, err := c.AddFunc(os.Getenv("SCHOOL_CRON"), func() {
-		var messageError, message string
-
-		grades, err := school.GetGrades(
-			&school.Site{
-				JWT:        os.Getenv("SCHOOL_JWT"),
-				URL:        os.Getenv("SCHOOL_URL"),
-				EucationID: os.Getenv("SCHOOL_EUCATION_ID"),
-			},
-		)
-		if err != nil {
-			slog.Warn("Error getting grades", "error", err)
-
-			messageError = "Ошибка получения оценок"
-		}
-
-		message, err = tg.CreateMessage(grades)
-		if err != nil {
-			slog.Warn("Error creating message", "error", err)
-
-			messageError = "Ошибка создания сообщения"
-		}
-
-		if messageError != "" {
-			message = messageError
-		}
-
-		mesg := tg.Message{
-			Text:   message,
-			ChatID: os.Getenv("SCHOOL_CHAT_ID"),
-			Token:  os.Getenv("SCHOOL_TOKEN"),
-		}
-
-		if err = mesg.SendGrades(); err != nil {
-			slog.Warn("Error sending message", "error", err)
-		}
-
-		slog.Info("Cron task completed")
-	})
+	_, err := c.AddFunc(os.Getenv("SCHOOL_CRON_WORK_WEEK"), TodayReport)
 	if err != nil {
-		slog.Warn("Error adding cron task", "error", err)
+		slog.Warn("Error adding cron task today_report", "error", err)
+	}
+
+	_, err = c.AddFunc(os.Getenv("SCHOOL_CRON_WEEK_REPORT"), WeekReport)
+	if err != nil {
+		slog.Warn("Error adding cron task week_report", "error", err)
 	}
 
 	c.Start()
