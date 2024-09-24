@@ -32,7 +32,7 @@ type Site struct {
 }
 
 func GetGrades(site *Site) ([]byte, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, site.URL, nil)
