@@ -7,7 +7,7 @@ all:
 	@echo '   make build                                                    '
 
 build_linux:
-	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.Version=$(VERSION)'"  -o school main.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.Version=$(VERSION)'"  -o school main.go
 
 build_darwin:
 	CGO_ENABLED=0  GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w -X 'main.Version=$(VERSION)'"  -o school main.go
