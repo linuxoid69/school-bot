@@ -12,21 +12,34 @@ import (
 	"git.my-itclub.ru/bots/school/internal/school"
 )
 
-func main() {
-	var dateFrom, dateTo string
+var Version string
 
-	flag.StringVar(&dateFrom, "from", "", "use as 01.01.2001")
-	flag.StringVar(&dateTo, "to", "", "use as 01.01.2001")
+func main() {
+	var (
+		dateFromFlag, dateToFlag string
+		versionFlag              bool
+	)
+
+	flag.StringVar(&dateFromFlag, "from", "", "use as 01.01.2001")
+	flag.StringVar(&dateToFlag, "to", "", "use as 01.01.2001")
+	flag.BoolVar(&versionFlag, "v", false, "show version")
 	flag.Parse()
 
-	if dateFrom != "" && dateTo != "" {
+	if versionFlag {
+		fmt.Println(Version)
+
+		return
+	}
+
+	if dateFromFlag != "" && dateToFlag != "" {
 		grades, err := school.GetGrades(
 			&school.Site{
 				JWT:        os.Getenv("SCHOOL_JWT"),
 				URL:        os.Getenv("SCHOOL_URL"),
 				EucationID: os.Getenv("SCHOOL_EUCATION_ID"),
-				DateFrom:   dateFrom,
-				DateTo:     dateTo,
+				UserAgent:  os.Getenv("SCHOOL_USER_AGENT"),
+				DateFrom:   dateFromFlag,
+				DateTo:     dateToFlag,
 			},
 		)
 		if err != nil {

@@ -26,6 +26,7 @@ func TestCheckEnvVars(t *testing.T) {
 				"SCHOOL_EUCATION_ID":    "1234",
 				"SCHOOL_TOKEN":          "1234",
 				"SCHOOL_CRON_WORK_WEEK": "* * * * *",
+				"SCHOOL_USER_AGENT":     "Mozilla/5.0 (X11; Linux x86_64)",
 			},
 		},
 		{
