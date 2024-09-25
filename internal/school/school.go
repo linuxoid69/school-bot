@@ -29,6 +29,7 @@ type Site struct {
 	EucationID string
 	DateFrom   string
 	DateTo     string
+	UserAgent  string
 }
 
 func GetGrades(site *Site) ([]byte, error) {
@@ -54,6 +55,7 @@ func GetGrades(site *Site) ([]byte, error) {
 	q.Add("p_date_from", site.DateFrom)
 	q.Add("p_date_to", site.DateTo)
 	req.URL.RawQuery = q.Encode()
+	req.Header.Set("User-Agent", site.UserAgent)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {

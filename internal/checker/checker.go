@@ -13,6 +13,7 @@ var (
 		"SCHOOL_TOKEN",
 		"SCHOOL_CHAT_ID",
 		"SCHOOL_CRON_WORK_WEEK",
+		"SCHOOL_USER_AGENT",
 	}
 )
 

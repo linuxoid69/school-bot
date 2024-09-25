@@ -22,6 +22,7 @@ func TodayReport() {
 			JWT:        os.Getenv("SCHOOL_JWT"),
 			URL:        os.Getenv("SCHOOL_URL"),
 			EucationID: os.Getenv("SCHOOL_EUCATION_ID"),
+			UserAgent:  os.Getenv("SCHOOL_USER_AGENT"),
 		},
 	)
 	if err != nil {
@@ -64,6 +65,7 @@ func WeekReport() {
 			JWT:        os.Getenv("SCHOOL_JWT"),
 			URL:        os.Getenv("SCHOOL_URL"),
 			EucationID: os.Getenv("SCHOOL_EUCATION_ID"),
+			UserAgent:  os.Getenv("SCHOOL_USER_AGENT"),
 			DateFrom:   perionFiveDays,
 			DateTo:     perionOneDay,
 		},
