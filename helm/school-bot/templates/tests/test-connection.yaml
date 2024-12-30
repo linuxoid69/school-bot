@@ -11,5 +11,4 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "school-bot.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
