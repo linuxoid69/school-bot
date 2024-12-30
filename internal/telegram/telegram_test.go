@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"git.my-itclub.ru/bots/school/internal/school"
+	"github.com/linuxoid69/school-bot/internal/school"
 )
 
 // func TestMessage_SendGrades(t *testing.T) {

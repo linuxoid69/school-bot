@@ -9,7 +9,7 @@ import (
 	"time"
 	"unicode"
 
-	"git.my-itclub.ru/bots/school/internal/school"
+	"github.com/linuxoid69/school-bot/internal/school"
 )
 
 type Message struct {
