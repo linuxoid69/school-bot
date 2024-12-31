@@ -1,0 +1,123 @@
+# Default values for school-bot.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# This will set the replicaset count more information can be found
+# here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# This sets the container image more information can be found 
+# here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: ghcr.io/linuxoid69/school-bot
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v0.3.3"
+
+# This is for the secretes for pulling an image from a private repository more information can be found
+# here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+vault:
+  enable: true
+  annotations: {}
+    # vault.hashicorp.com/agent-inject: 'true'
+    # vault.hashicorp.com/role: vault-k8s-role
+    # vault.hashicorp.com/agent-inject-secret-config: k8s/data/clusters/my-itclub/bots
+    # vault.hashicorp.com/agent-inject-template-config: |
+    #   {{- with secret "k8s/data/clusters/my-itclub/bots" -}}
+    #   export SCHOOL_JWT="{{ .Data.data.dnevnik_jwt }}"
+    #   export SCHOOL_TOKEN="{{ .Data.data.telegram_token }}"
+    #   {{- end }}
+    #   export SCHOOL_URL=https://dnevnik2.petersburgedu.ru/api/journal/estimate/table
+    #   export SCHOOL_EUCATION_ID=11111
+    #   export SCHOOL_CHAT_ID=-11111
+    #   export SCHOOL_CRON_WORK_WEEK="0 17 * * 1-5"
+    #   export SCHOOL_CRON_WEEK_REPORT="0 17 * * 6"
+    #   export SCHOOL_USER_AGENT="Mozilla/5.0 (X11; Linux x86_64)"
+
+secretEnv: {}
+  # foo: foo
+  # bar: bar
+
+autoscaling:
+  enabled: false
+
+# This section builds out the service account more information can be found 
+# here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# This is to setup the liveness and readiness probes more information can be found
+# here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  exec:
+    command:
+      - cat
+      - /proc/1/cmdline
+readinessProbe:
+  exec:
+    command:
+      - cat
+      - /proc/1/cmdline
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

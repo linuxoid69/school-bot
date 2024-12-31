@@ -19,7 +19,7 @@ lint:
 	golangci-lint run
 
 build_image:
-	docker buildx build --no-cache --platform linux/amd64 -t git.my-itclub.ru/bots/school:$(VERSION) .
+	docker buildx build --no-cache --platform linux/amd64 -t ghcr.io/linuxoid69/school-bot:$(VERSION) .
 
 push_image:
-	docker push git.my-itclub.ru/bots/school:$(VERSION)
+	docker push ghcr.io/linuxoid69/school-bot:$(VERSION)

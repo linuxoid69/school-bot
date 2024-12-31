@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"git.my-itclub.ru/bots/school/internal/school"
-	tg "git.my-itclub.ru/bots/school/internal/telegram"
+	"github.com/linuxoid69/school-bot/internal/school"
+	tg "github.com/linuxoid69/school-bot/internal/telegram"
 )
 
 const (

@@ -1,4 +1,4 @@
-module git.my-itclub.ru/bots/school
+module github.com/linuxoid69/school-bot
 
 go 1.22.5
 

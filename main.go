@@ -7,9 +7,9 @@ import (
 	"os"
 	"time"
 
-	"git.my-itclub.ru/bots/school/internal/checker"
-	"git.my-itclub.ru/bots/school/internal/cron"
-	"git.my-itclub.ru/bots/school/internal/school"
+	"github.com/linuxoid69/school-bot/internal/checker"
+	"github.com/linuxoid69/school-bot/internal/cron"
+	"github.com/linuxoid69/school-bot/internal/school"
 )
 
 var Version string
