@@ -1,6 +1,6 @@
 apiVersion: v2
 name: school-bot
-description: A Helm chart for Kubernetes
+description: A Helm chart for Kubernetes for getting school grades
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -22,3 +22,8 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "0.3.3"
+
+maintainers:
+  - name: Rustam Tagaev
+    email: linuxoid69@gmail.com
+
