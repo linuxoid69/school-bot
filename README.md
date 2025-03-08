@@ -15,7 +15,7 @@ SCHOOL_HOST            # "https://dnevnik2.petersburgedu.ru"  Хост сайт�
 SCHOOL_LOGIN           # логин
 SCHOOL_PASSWORD        # пароль
 SCHOOL_EUCATION_ID     # id учащегося
-SCHOOL_TELEGRAM_TOKEN           # телеграм токен
+SCHOOL_TELEGRAM_TOKEN  # телеграм токен
 SCHOOL_CHAT_ID         # id чата телеграм
 SCHOOL_CRON_WORK_WEEK  # cron выражение когда будут опрашиваться данные со школы
 SCHOOL_USER_AGENT      # user-agent для запросов к сайту школы
