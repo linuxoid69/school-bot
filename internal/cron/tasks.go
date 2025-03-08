@@ -3,39 +3,27 @@ package cron
 import (
 	"log/slog"
 	"os"
-	"time"
 
 	"github.com/linuxoid69/school-bot/internal/school"
 	tg "github.com/linuxoid69/school-bot/internal/telegram"
 )
 
-const (
-	oneDay   = 86400 * 1
-	fiveDays = 86400 * 5
-)
 
-func TodayReport() {
+func TodayReport(token string, site *school.Site) {
 	var messageError, message string
 
-	grades, err := school.GetGrades(
-		&school.Site{
-			JWT:        os.Getenv("SCHOOL_JWT"),
-			URL:        os.Getenv("SCHOOL_URL"),
-			EucationID: os.Getenv("SCHOOL_EUCATION_ID"),
-			UserAgent:  os.Getenv("SCHOOL_USER_AGENT"),
-		},
-	)
+	grades, err := site.GetGrades()
 	if err != nil {
 		slog.Warn("Error getting grades", "error", err)
 
-		messageError = "Ошибка получения оценок"
+		messageError = school.ERROR_GETTIG_GRADES
 	}
 
-	message, err = tg.CreateMessage(grades)
+	message, err = tg.CreateTodayReport(grades)
 	if err != nil {
 		slog.Warn("Error creating message", "error", err)
 
-		messageError = "Ошибка создания сообщения"
+		messageError = school.ERROR_CREATING_MESSAGE
 	}
 
 	if messageError != "" {
@@ -45,7 +33,7 @@ func TodayReport() {
 	mesg := tg.Message{
 		Text:   message,
 		ChatID: os.Getenv("SCHOOL_CHAT_ID"),
-		Token:  os.Getenv("SCHOOL_TOKEN"),
+		Token:  os.Getenv("SCHOOL_TELEGRAM_TOKEN"),
 	}
 
 	if err = mesg.SendGrades(); err != nil {
@@ -55,32 +43,21 @@ func TodayReport() {
 	slog.Info("Cron task TodayReport completed")
 }
 
-func WeekReport() {
+func WeekReport(token string, site *school.Site) {
 	var messageError, message string
-	perionFiveDays := time.Unix(time.Now().Unix()-fiveDays, 0).Format("02.01.2006")
-	perionOneDay := time.Unix(time.Now().Unix()-oneDay, 0).Format("02.01.2006")
 
-	grades, err := school.GetGrades(
-		&school.Site{
-			JWT:        os.Getenv("SCHOOL_JWT"),
-			URL:        os.Getenv("SCHOOL_URL"),
-			EucationID: os.Getenv("SCHOOL_EUCATION_ID"),
-			UserAgent:  os.Getenv("SCHOOL_USER_AGENT"),
-			DateFrom:   perionFiveDays,
-			DateTo:     perionOneDay,
-		},
-	)
+	grades, err := site.GetGrades()
 	if err != nil {
 		slog.Warn("Error getting grades", "error", err)
 
-		messageError = "Ошибка получения оценок"
+		messageError = school.ERROR_GETTIG_GRADES
 	}
 
-	message, err = tg.CreateWeekReport(perionFiveDays, perionOneDay, grades)
+	message, err = tg.CreateWeekReport(site.DateFrom, site.DateTo, grades)
 	if err != nil {
 		slog.Warn("Error creating message", "error", err)
 
-		messageError = "Ошибка создания сообщения"
+		messageError = school.ERROR_CREATING_MESSAGE
 	}
 
 	if messageError != "" {
@@ -90,7 +67,7 @@ func WeekReport() {
 	mesg := tg.Message{
 		Text:   message,
 		ChatID: os.Getenv("SCHOOL_CHAT_ID"),
-		Token:  os.Getenv("SCHOOL_TOKEN"),
+		Token:  os.Getenv("SCHOOL_TELEGRAM_TOKEN"),
 	}
 
 	if err = mesg.SendGrades(); err != nil {

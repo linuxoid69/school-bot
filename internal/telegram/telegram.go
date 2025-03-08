@@ -42,7 +42,7 @@ func (m *Message) SendGrades() error {
 	return nil
 }
 
-func CreateMessage(data []byte) (string, error) {
+func CreateTodayReport(data []byte) (string, error) {
 	var grades school.Grades
 
 	if err := json.Unmarshal(data, &grades); err != nil {

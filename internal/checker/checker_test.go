@@ -24,7 +24,7 @@ func TestCheckEnvVars(t *testing.T) {
 				"SCHOOL_URL":            "https://example.com",
 				"SCHOOL_CHAT_ID":        "1234",
 				"SCHOOL_EUCATION_ID":    "1234",
-				"SCHOOL_TOKEN":          "1234",
+				"SCHOOL_TELEGRAM_TOKEN": "1234",
 				"SCHOOL_CRON_WORK_WEEK": "* * * * *",
 				"SCHOOL_USER_AGENT":     "Mozilla/5.0 (X11; Linux x86_64)",
 			},
@@ -37,7 +37,7 @@ func TestCheckEnvVars(t *testing.T) {
 				"SCHOOL_URL":            "",
 				"SCHOOL_CHAT_ID":        "",
 				"SCHOOL_EUCATION_ID":    "",
-				"SCHOOL_TOKEN":          "",
+				"SCHOOL_TELEGRAM_TOKEN": "",
 				"SCHOOL_CRON_WORK_WEEK": "",
 			},
 		},
@@ -48,7 +48,7 @@ func TestCheckEnvVars(t *testing.T) {
 
 			err := CheckEnvVars()
 			if (err != nil) != tt.wantErr {
-				t.Errorf("CreateMessage() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("CreateTodayReport() error = %v, wantErr %v", err, tt.wantErr)
 
 				return
 			}

@@ -32,16 +32,28 @@ func main() {
 	}
 
 	if dateFromFlag != "" && dateToFlag != "" {
-		grades, err := school.GetGrades(
-			&school.Site{
-				JWT:        os.Getenv("SCHOOL_JWT"),
-				URL:        os.Getenv("SCHOOL_URL"),
-				EucationID: os.Getenv("SCHOOL_EUCATION_ID"),
-				UserAgent:  os.Getenv("SCHOOL_USER_AGENT"),
-				DateFrom:   dateFromFlag,
-				DateTo:     dateToFlag,
-			},
-		)
+		login := school.Login{
+			Type:     school.DEFAULT_LOGIN_TYPE,
+			Host:     os.Getenv("SCHOOL_HOST"),
+			Login:    os.Getenv("SCHOOL_LOGIN"),
+			Password: os.Getenv("SCHOOL_PASSWORD"),
+		}
+
+		token, err := login.GetJWTToken()
+		if err != nil {
+			slog.Error("Can't get JWT token", "error", err)
+		}
+
+		site := school.Site{
+			JWT:             token,
+			JournalLocation: os.Getenv("SCHOOL_HOST") + "/" + school.JOURNAL_URL,
+			EucationID:      os.Getenv("SCHOOL_EUCATION_ID"),
+			UserAgent:       os.Getenv("SCHOOL_USER_AGENT"),
+			DateFrom:        dateFromFlag,
+			DateTo:          dateToFlag,
+		}
+
+		grades, err := site.GetGrades()
 		if err != nil {
 			slog.Warn("Error getting grades", "error", err)
 		}

@@ -6,7 +6,7 @@
 # here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
-# This sets the container image more information can be found 
+# This sets the container image more information can be found
 # here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   repository: ghcr.io/linuxoid69/school-bot
@@ -31,7 +31,7 @@ vault:
     # vault.hashicorp.com/agent-inject-template-config: |
     #   {{- with secret "k8s/data/clusters/my-itclub/bots" -}}
     #   export SCHOOL_JWT="{{ .Data.data.dnevnik_jwt }}"
-    #   export SCHOOL_TOKEN="{{ .Data.data.telegram_token }}"
+    #   export SCHOOL_TELEGRAM_TOKEN="{{ .Data.data.telegram_token }}"
     #   {{- end }}
     #   export SCHOOL_URL=https://dnevnik2.petersburgedu.ru/api/journal/estimate/table
     #   export SCHOOL_EUCATION_ID=11111
@@ -47,7 +47,7 @@ secretEnv: {}
 autoscaling:
   enabled: false
 
-# This section builds out the service account more information can be found 
+# This section builds out the service account more information can be found
 # here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # Specifies whether a service account should be created
