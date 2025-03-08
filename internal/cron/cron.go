@@ -33,24 +33,25 @@ func RunTask() {
 		slog.Error("Can't get JWT token", "error", err)
 	}
 
-	periodFiveDays := time.Unix(time.Now().Unix()-FIVE_DAYS, 0).Format(DATA_FORMAT)
-	periodOneDay := time.Unix(time.Now().Unix()-ONE_DAY, 0).Format(DATA_FORMAT)
-
 	site := &school.Site{
 		JWT:             token,
 		JournalLocation: os.Getenv("SCHOOL_HOST") + "/" + school.JOURNAL_URL,
 		EucationID:      os.Getenv("SCHOOL_EUCATION_ID"),
 		UserAgent:       os.Getenv("SCHOOL_USER_AGENT"),
-		DateFrom:        periodFiveDays,
-		DateTo:          periodOneDay,
+		DateFrom:        time.Unix(time.Now().Unix()-FIVE_DAYS, 0).Format(DATA_FORMAT),
+		DateTo:          time.Unix(time.Now().Unix()-ONE_DAY, 0).Format(DATA_FORMAT),
 	}
 
-	_, err = c.AddFunc(os.Getenv("SCHOOL_CRON_WORK_WEEK"), func() { TodayReport(token, site) })
+	report := Report{Type: "today"}
+
+	_, err = c.AddFunc(os.Getenv("SCHOOL_CRON_WORK_WEEK"), func() { report.BuildReport(token, site) })
 	if err != nil {
 		slog.Warn("Error adding cron task today_report", "error", err)
 	}
 
-	_, err = c.AddFunc(os.Getenv("SCHOOL_CRON_WEEK_REPORT"), func() { WeekReport(token, site) })
+	report = Report{Type: "week"}
+
+	_, err = c.AddFunc(os.Getenv("SCHOOL_CRON_WEEK_REPORT"), func() { report.BuildReport(token, site) })
 	if err != nil {
 		slog.Warn("Error adding cron task week_report", "error", err)
 	}
