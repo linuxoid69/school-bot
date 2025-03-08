@@ -9,33 +9,6 @@ import (
 	"github.com/linuxoid69/school-bot/internal/school"
 )
 
-// func TestMessage_SendGrades(t *testing.T) {
-// 	type fields struct {
-// 		Text   string
-// 		ChatID string
-// 		Token  string
-// 	}
-// 	tests := []struct {
-// 		name    string
-// 		fields  fields
-// 		wantErr bool
-// 	}{
-// 		// TODO: Add test cases.
-// 	}
-// 	for _, tt := range tests {
-// 		t.Run(tt.name, func(t *testing.T) {
-// 			m := &Message{
-// 				Text:   tt.fields.Text,
-// 				ChatID: tt.fields.ChatID,
-// 				Token:  tt.fields.Token,
-// 			}
-// 			if err := m.SendGrades(); (err != nil) != tt.wantErr {
-// 				t.Errorf("Message.SendGrades() error = %v, wantErr %v", err, tt.wantErr)
-// 			}
-// 		})
-// 	}
-// }
-
 func TestCreateTodayReport(t *testing.T) {
 	var grades, gradesEmpty school.Grades
 
@@ -110,6 +83,7 @@ func TestCreateTodayReport(t *testing.T) {
 			got, err := CreateTodayReport(tt.args.data)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("CreateTodayReport() error = %v, wantErr %v", err, tt.wantErr)
+
 				return
 			}
 
