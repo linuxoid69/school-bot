@@ -1,0 +1,43 @@
+name: Build school-bot
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+
+jobs:
+  markdown_lint:
+    name: Check Markdown files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Send message to telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            School-bot ${{ github.repository }}
+      - name: Golang linter
+      - uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.58
+      - uses: actions/checkout@master
+      - name: Send message to telegram
+        if: success()
+        env:
+          STATUS_LINT: ☀️
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Finish build ${{ github.repository }} job status ${{ job.status }} ${{ env.STATUS_LINT }}
+      - uses: actions/checkout@master
+      - name: Send message to telegram
+        if: failure()
+        env:
+          STATUS_LINT: ⚡️
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Finish build ${{ github.repository }} job status ${{ job.status }} ${{ env.STATUS_LINT }}
