@@ -6,6 +6,7 @@ BUILD_CMD='GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.Version=$(V
 GROUP=linuxoid69
 DOCKER_REGISTRY=ghcr.io
 GOLANG_VERSION=$(shell cat go.mod | grep ^go | cut -d " " -f 2)
+REGISTRY_USER=$(GROUP)
 
 all:
 	@echo 'DEFAULT:        '
@@ -28,9 +29,10 @@ build_image:
 	docker buildx build --no-cache --platform linux/amd64 \
 						--build-arg BUILD_CMD=$(BUILD_CMD) \
 						--build-arg GOLANG_VERSION=$(GOLANG_VERSION) \
-						-t ghcr.io/linuxoid69/school-bot:$(VERSION) .
-	docker tag $(DOCKER_REGISTRY)/$(GROUP)/$(APP):$(VERSION) $(DOCKER_REGISTRY)/$(GROUP)/$(APP):latest
+						-t $(DOCKER_REGISTRY)/$(GROUP)/$(APP):$(VERSION) .
 
 push_image:
-	docker login ghcr.io -u linuxoid69 -p $(REGISTRY_TOKEN)
-	docker push ghcr.io/linuxoid69/school-bot:$(VERSION)
+ifeq ($(CI), true)
+	docker login $(DOCKER_REGISTRY) -u $(REGISTRY_USER) -p $(REGISTRY_TOKEN)
+endif
+	docker push $(DOCKER_REGISTRY)/$(GROUP)/$(APP):$(VERSION)
