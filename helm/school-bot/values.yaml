@@ -30,10 +30,11 @@ vault:
     # vault.hashicorp.com/agent-inject-secret-config: k8s/data/clusters/my-itclub/bots
     # vault.hashicorp.com/agent-inject-template-config: |
     #   {{- with secret "k8s/data/clusters/my-itclub/bots" -}}
-    #   export SCHOOL_JWT="{{ .Data.data.dnevnik_jwt }}"
     #   export SCHOOL_TELEGRAM_TOKEN="{{ .Data.data.telegram_token }}"
+    #   export SCHOOL_USER="{{ .Data.data.school_user }}"
+    #   export SCHOOL_PASSWORD="{{ .Data.data.school_token }}"
     #   {{- end }}
-    #   export SCHOOL_URL=https://dnevnik2.petersburgedu.ru/api/journal/estimate/table
+    #   export SCHOOL_HOST=https://dnevnik2.petersburgedu.ru
     #   export SCHOOL_EUCATION_ID=11111
     #   export SCHOOL_CHAT_ID=-11111
     #   export SCHOOL_CRON_WORK_WEEK="0 17 * * 1-5"
