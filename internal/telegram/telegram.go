@@ -56,7 +56,7 @@ func CreateTodayReport(data []byte) (string, error) {
 	var sb strings.Builder
 
 	sb.WriteString(fmt.Sprintf(
-		"Оценки за %s: \n%s\n",
+		"Оценки за %s:\n%s\n",
 		time.Now().Format("02.01.2006"),
 		"========================================"))
 
@@ -70,7 +70,7 @@ func CreateTodayReport(data []byte) (string, error) {
 		}
 
 		_, err := sb.WriteString(
-			fmt.Sprintf("\nУрок: %s \nИтог: %s \nГде: %s \nКомментарий: %s \n%s",
+			fmt.Sprintf("\nУрок: %s\nИтог: %s\nГде: %s\nКомментарий:%s\n%s",
 				item.SubjectName,
 				item.EstimateValueName,
 				item.EstimateTypeName,
