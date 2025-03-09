@@ -31,14 +31,12 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Send message to telegram
-        env:
-          STATUS_LINT: ☀️
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            Finish build ${{ github.repository }} job status ${{ job.status }} ${{ env.STATUS_LINT }}
+            Finish build ${{ github.repository }} job status ☀️
   sendResultFailure:
     needs: ["testReport", "goLinter"]
     if: failure()
@@ -47,12 +45,10 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Send message to telegram
-        env:
-          STATUS_LINT: ⚡️
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            Finish build ${{ github.repository }} job status ${{ job.status }} ${{ env.STATUS_LINT }}
+            Finish build ${{ github.repository }} job status ⚡️
             Current Workflow URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
