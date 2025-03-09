@@ -10,6 +10,8 @@ jobs:
       - uses: actions/checkout@master
       - name: Set up Go
         uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
       - uses: actions/checkout@master
       - name: Run tests
         run: go install github.com/becheran/go-testreport@main && go mod download && source .env-test &&
