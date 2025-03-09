@@ -33,15 +33,11 @@ jobs:
       - uses: actions/checkout@master
       - name: Build image
         run: make build_image
-  pushImage:
-    name: Push image
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@master
       - name: Push image
         run: make push_image
   sendResultSuccess:
-    needs: ['testReport', 'goLinter', 'buildImage', 'pushImage']
+    needs: ['testReport', 'goLinter', 'buildImage']
     if: success()
     name: Send result build if success
     runs-on: ubuntu-latest
@@ -57,7 +53,7 @@ jobs:
           message: |
             Finish build ${{ github.repository }} job status ☀️
   sendResultFailure:
-    needs: ['testReport', 'goLinter', 'buildImage', 'pushImage']
+    needs: ['testReport', 'goLinter', 'buildImage']
     if: failure()
     name: Send result build if failure
     runs-on: ubuntu-latest
