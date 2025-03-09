@@ -9,16 +9,10 @@ jobs:
     steps:
       - name: Set up Go
         uses: actions/setup-go@v5
-        with:
-          go-version: 1.22
       - uses: actions/checkout@master
-      # - name: Install go-testreport
-      #   run: go install github.com/becheran/go-testreport@main
-      # - name: Test
-      #   run: go mod download && source .env-test &&  go test ./... -json | go-testreport -vars="Title:Test Report Linux"
       - name: Run tests
         run: go mod download && source .env-test && go test ./... -json > report.json
-      - name: Report
+      - name: Tests report
         uses: becheran/go-testreport@main
         with:
           input: report.json
