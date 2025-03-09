@@ -55,3 +55,4 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             Finish build ${{ github.repository }} job status ${{ job.status }} ${{ env.STATUS_LINT }}
+            Current Workflow URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
