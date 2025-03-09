@@ -33,6 +33,6 @@ build_image:
 
 push_image:
 ifeq ($(CI), true)
-	docker login $(DOCKER_REGISTRY) -u $(REGISTRY_USER) -p $(REGISTRY_TOKEN)
+	echo $(REGISTRY_TOKEN) | docker login $(DOCKER_REGISTRY) -u $(REGISTRY_USER) --password-stdin
 endif
 	docker push $(DOCKER_REGISTRY)/$(GROUP)/$(APP):$(VERSION)
