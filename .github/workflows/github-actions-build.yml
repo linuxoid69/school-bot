@@ -36,6 +36,8 @@ jobs:
       - uses: actions/checkout@master
       - name: Push image
         run: make push_image
+        env:
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
   sendResultSuccess:
     needs: ['testReport', 'goLinter', 'buildImage']
     if: success()

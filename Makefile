@@ -32,5 +32,5 @@ build_image:
 	docker tag $(DOCKER_REGISTRY)/$(GROUP)/$(APP):$(VERSION) $(DOCKER_REGISTRY)/$(GROUP)/$(APP):latest
 
 push_image:
+	docker login ghcr.io -u linuxoid69 -p $(REGISTRY_TOKEN)
 	docker push ghcr.io/linuxoid69/school-bot:$(VERSION)
-
