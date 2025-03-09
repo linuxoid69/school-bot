@@ -3,15 +3,6 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 
 jobs:
-  prepare-needs:
-    runs-on: ubuntu-latest
-    outputs:
-      needs_list: ${{ steps.set-needs.outputs.needs_list }}
-    steps:
-      - name: Set needs list
-        id: set-needs
-        run: |
-          echo "needs_list=['testReport', 'goLinter', 'buildImage', 'pushImage']" >> $GITHUB_OUTPUT
   testReport:
     name: Test report
     runs-on: ubuntu-latest
@@ -50,7 +41,7 @@ jobs:
       - name: Push image
         run: make push_image
   sendResultSuccess:
-    needs: prepare-needs
+    needs: ['testReport', 'goLinter', 'buildImage', 'pushImage']
     if: success()
     name: Send result build if success
     runs-on: ubuntu-latest
@@ -66,7 +57,7 @@ jobs:
           message: |
             Finish build ${{ github.repository }} job status ☀️
   sendResultFailure:
-    needs: prepare-needs
+    needs: ['testReport', 'goLinter', 'buildImage', 'pushImage']
     if: failure()
     name: Send result build if failure
     runs-on: ubuntu-latest
