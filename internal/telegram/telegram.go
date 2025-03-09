@@ -12,6 +12,10 @@ import (
 	"github.com/linuxoid69/school-bot/internal/school"
 )
 
+const (
+	TELEGRAM_API_HOST string = "https://api.telegram.org"
+)
+
 type Message struct {
 	Text   string `json:"text"`
 	ChatID string `json:"chat_id"`
@@ -26,7 +30,7 @@ func (m *Message) SendGrades() error {
 
 	req, err := http.NewRequest(
 		http.MethodPost,
-		fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", m.Token),
+		fmt.Sprintf("%s/bot%s/sendMessage", TELEGRAM_API_HOST, m.Token),
 		bytes.NewBuffer(payload))
 	if err != nil {
 		return err
@@ -88,6 +92,7 @@ func CreateWeekReport(fromDate, toDate string, data []byte) (string, error) {
 	}
 
 	weekGrades := make(map[string]string)
+
 	for _, item := range grades.Data.Items {
 		if unicode.IsDigit([]rune(item.EstimateValueName)[0]) {
 			weekGrades[item.SubjectName] += item.EstimateValueName + ","

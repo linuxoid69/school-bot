@@ -69,7 +69,8 @@ func (login *Login) NewLogin() (string, error) {
 		return "", fmt.Errorf("Error: %v", err)
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, login.Host+"/"+LOGIN_LOCATION, bytes.NewBuffer(bodyJson))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, login.Host+
+		"/"+LOGIN_LOCATION, bytes.NewBuffer(bodyJson))
 	if err != nil {
 		return "", fmt.Errorf("Error: %v", err)
 	}
