@@ -34,7 +34,7 @@ jobs:
       - name: Build image
         run: make build_image
   sendResultSuccess:
-    needs: ["testReport", "goLinter"]
+    needs: ["testReport", "goLinter", "buildImage"]
     if: success()
     name: Send result build if success
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
           message: |
             Finish build ${{ github.repository }} job status ☀️
   sendResultFailure:
-    needs: ["testReport", "goLinter"]
+    needs: ["testReport", "goLinter", "buildImage"]
     if: failure()
     name: Send result build if failure
     runs-on: ubuntu-latest
@@ -66,3 +66,4 @@ jobs:
           message: |
             Finish build ${{ github.repository }} job status ⚡️
             Current Workflow URL: [link](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
