@@ -24,8 +24,8 @@ jobs:
       - name: Golang linter
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.58
-          args: -c .golangci.yml
+          version: v1.61.0
+          args: --config=.golangci.yml
   sendResultSuccess:
     needs: ["testReport", "goLinter"]
     if: success()
