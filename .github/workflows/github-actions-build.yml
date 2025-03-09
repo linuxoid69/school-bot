@@ -3,8 +3,8 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 
 jobs:
-  markdown_lint:
-    name: Build school-bot
+  testReport:
+    name: Test report
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -14,11 +14,19 @@ jobs:
         uses: becheran/go-testreport@main
         with:
           input: report.json
+  goLinter:
+    name: Golang linter
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@master
       - name: Golang linter
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.58
+  sendResult:
+    name: Send result build
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@master
       - name: Send message to telegram
         if: success()
