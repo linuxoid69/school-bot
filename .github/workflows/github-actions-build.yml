@@ -26,7 +26,7 @@ jobs:
   sendResultSuccess:
     needs: ["testReport", "goLinter"]
     if: success()
-    name: Send result build
+    name: Send result build if success
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -43,7 +43,7 @@ jobs:
   sendResultFailure:
     needs: ["testReport", "goLinter"]
     if: failure()
-    name: Send result build
+    name: Send result build if failure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
