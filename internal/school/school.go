@@ -11,11 +11,11 @@ import (
 )
 
 const (
-	LOGIN_LOCATION         string = "api/user/auth/login"
-	DEFAULT_LOGIN_TYPE     string = "email"
-	JOURNAL_URL            string = "api/journal/estimate/table"
-	ERROR_GETTIG_GRADES    string = "Ошибка получения оценок"
-	ERROR_CREATING_MESSAGE string = "Ошибка создания сообщения"
+	LoginLocation        string = "api/user/auth/login"
+	DefaultLoginType     string = "email"
+	JournalURL           string = "api/journal/estimate/table"
+	ErrorGettingGrades   string = "Ошибка получения оценок"
+	ErrorCreatingMessege string = "Ошибка создания сообщения"
 )
 
 type Grades struct {
@@ -64,27 +64,27 @@ func (login *Login) NewLogin() (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
-	bodyJson, err := json.Marshal(login)
+	bodyJSON, err := json.Marshal(login)
 	if err != nil {
-		return "", fmt.Errorf("Error: %v", err)
+		return "", fmt.Errorf("Error: %w", err)
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, login.Host+
-		"/"+LOGIN_LOCATION, bytes.NewBuffer(bodyJson))
+		"/"+LoginLocation, bytes.NewBuffer(bodyJSON))
 	if err != nil {
-		return "", fmt.Errorf("Error: %v", err)
+		return "", fmt.Errorf("Error: %w", err)
 	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", fmt.Errorf("Error: %v", err)
+		return "", fmt.Errorf("Error: %w", err)
 	}
 
 	defer resp.Body.Close()
 
 	resBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", fmt.Errorf("Error: %v", err)
+		return "", fmt.Errorf("Error: %w", err)
 	}
 
 	return string(resBody), nil
@@ -131,16 +131,16 @@ func (s *Site) GetGrades() ([]byte, error) {
 	return body, nil
 }
 
-func (l *Login) GetJWTToken() (string, error) {
-	loginResponse, err := l.NewLogin()
+func (login *Login) GetJWTToken() (string, error) {
+	loginResponse, err := login.NewLogin()
 	if err != nil {
-		return "", fmt.Errorf("Can't login %v", err)
+		return "", fmt.Errorf("Can't login %w", err)
 	}
 
 	var jwt *LoginResponse
 
 	if err := json.Unmarshal([]byte(loginResponse), &jwt); err != nil {
-		return "", fmt.Errorf("Can't unmarshal loginResponse %v", err)
+		return "", fmt.Errorf("Can't unmarshal loginResponse %w", err)
 	}
 
 	return jwt.Data.Token, nil

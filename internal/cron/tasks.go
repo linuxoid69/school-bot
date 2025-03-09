@@ -12,14 +12,14 @@ type Report struct {
 	Type string
 }
 
-func (r *Report) BuildReport(token string, site *school.Site) {
+func (r *Report) BuildReport(site *school.Site) {
 	var messageError, message string
 
 	grades, err := site.GetGrades()
 	if err != nil {
 		slog.Warn("Error getting grades", "error", err)
 
-		messageError = school.ERROR_GETTIG_GRADES
+		messageError = school.ErrorGettingGrades
 	}
 
 	switch r.Type {
@@ -28,14 +28,14 @@ func (r *Report) BuildReport(token string, site *school.Site) {
 		if err != nil {
 			slog.Warn("Error creating message", "error", err)
 
-			messageError = school.ERROR_CREATING_MESSAGE
+			messageError = school.ErrorCreatingMessege
 		}
 	case "today":
 		message, err = tg.CreateTodayReport(grades)
 		if err != nil {
 			slog.Warn("Error creating message", "error", err)
 
-			messageError = school.ERROR_CREATING_MESSAGE
+			messageError = school.ErrorCreatingMessege
 		}
 	}
 

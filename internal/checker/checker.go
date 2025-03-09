@@ -21,7 +21,7 @@ var (
 func CheckEnvVars() error {
 	for _, v := range envVars {
 		if os.Getenv(v) == "" {
-			return fmt.Errorf("variable " + v + " is not set")
+			return fmt.Errorf("variable %v is not set ", v)
 		}
 	}
 

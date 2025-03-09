@@ -33,7 +33,7 @@ func main() {
 
 	if dateFromFlag != "" && dateToFlag != "" {
 		login := school.Login{
-			Type:     school.DEFAULT_LOGIN_TYPE,
+			Type:     school.DefaultLoginType,
 			Host:     os.Getenv("SCHOOL_HOST"),
 			Login:    os.Getenv("SCHOOL_LOGIN"),
 			Password: os.Getenv("SCHOOL_PASSWORD"),
@@ -46,7 +46,7 @@ func main() {
 
 		site := school.Site{
 			JWT:             token,
-			JournalLocation: os.Getenv("SCHOOL_HOST") + "/" + school.JOURNAL_URL,
+			JournalLocation: os.Getenv("SCHOOL_HOST") + "/" + school.JournalURL,
 			EucationID:      os.Getenv("SCHOOL_EUCATION_ID"),
 			UserAgent:       os.Getenv("SCHOOL_USER_AGENT"),
 			DateFrom:        dateFromFlag,

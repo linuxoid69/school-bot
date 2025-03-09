@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	ONE_DAY     = 86400 * 1
-	FIVE_DAYS   = 86400 * 5
-	DATA_FORMAT = "02.01.2006"
+	OneDay     = 86400 * 1
+	FiveDays   = 86400 * 5
+	DataFormat = "02.01.2006"
 )
 
 func RunTask() {
@@ -22,7 +22,7 @@ func RunTask() {
 	cron.WithLocation(l)
 
 	login := school.Login{
-		Type:     school.DEFAULT_LOGIN_TYPE,
+		Type:     school.DefaultLoginType,
 		Host:     os.Getenv("SCHOOL_HOST"),
 		Login:    os.Getenv("SCHOOL_LOGIN"),
 		Password: os.Getenv("SCHOOL_PASSWORD"),
@@ -35,23 +35,23 @@ func RunTask() {
 
 	site := &school.Site{
 		JWT:             token,
-		JournalLocation: os.Getenv("SCHOOL_HOST") + "/" + school.JOURNAL_URL,
+		JournalLocation: os.Getenv("SCHOOL_HOST") + "/" + school.JournalURL,
 		EucationID:      os.Getenv("SCHOOL_EUCATION_ID"),
 		UserAgent:       os.Getenv("SCHOOL_USER_AGENT"),
-		DateFrom:        time.Unix(time.Now().Unix()-FIVE_DAYS, 0).Format(DATA_FORMAT),
-		DateTo:          time.Unix(time.Now().Unix()-ONE_DAY, 0).Format(DATA_FORMAT),
+		DateFrom:        time.Unix(time.Now().Unix()-FiveDays, 0).Format(DataFormat),
+		DateTo:          time.Unix(time.Now().Unix()-OneDay, 0).Format(DataFormat),
 	}
 
 	report := Report{Type: "today"}
 
-	_, err = c.AddFunc(os.Getenv("SCHOOL_CRON_WORK_WEEK"), func() { report.BuildReport(token, site) })
+	_, err = c.AddFunc(os.Getenv("SCHOOL_CRON_WORK_WEEK"), func() { report.BuildReport(site) })
 	if err != nil {
 		slog.Warn("Error adding cron task today_report", "error", err)
 	}
 
 	report = Report{Type: "week"}
 
-	_, err = c.AddFunc(os.Getenv("SCHOOL_CRON_WEEK_REPORT"), func() { report.BuildReport(token, site) })
+	_, err = c.AddFunc(os.Getenv("SCHOOL_CRON_WEEK_REPORT"), func() { report.BuildReport(site) })
 	if err != nil {
 		slog.Warn("Error adding cron task week_report", "error", err)
 	}

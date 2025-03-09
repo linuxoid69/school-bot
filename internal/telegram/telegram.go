@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	TELEGRAM_API_HOST string = "https://api.telegram.org"
+	TelegramAPIHost string = "https://api.telegram.org"
 )
 
 type Message struct {
@@ -30,7 +30,7 @@ func (m *Message) SendGrades() error {
 
 	req, err := http.NewRequest(
 		http.MethodPost,
-		fmt.Sprintf("%s/bot%s/sendMessage", TELEGRAM_API_HOST, m.Token),
+		fmt.Sprintf("%s/bot%s/sendMessage", TelegramAPIHost, m.Token),
 		bytes.NewBuffer(payload))
 	if err != nil {
 		return err
