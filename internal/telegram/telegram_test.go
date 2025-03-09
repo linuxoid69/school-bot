@@ -28,12 +28,12 @@ func TestCreateTodayReport(t *testing.T) {
 
 	data, err := json.Marshal(grades)
 	if err != nil {
-		fmt.Errorf("Error marshal json")
+		t.Errorf("Error marshal json: %v", err)
 	}
 
 	dataEmpty, err := json.Marshal(gradesEmpty)
 	if err != nil {
-		fmt.Errorf("Error marshal json")
+		t.Errorf("Error marshal json: %v", err)
 	}
 
 	type args struct {
