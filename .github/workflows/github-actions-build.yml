@@ -15,8 +15,9 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             School-bot ${{ github.repository }}
-      - uses: golangci/golangci-lint-action@v6
+      - uses: actions/checkout@master
       - name: Golang linter
+        uses: golangci/golangci-lint-action@v6
         with:
           version: v1.58
       - uses: actions/checkout@master
