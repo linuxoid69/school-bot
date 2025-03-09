@@ -4,17 +4,15 @@ on: [push]
 
 jobs:
   markdown_lint:
-    name: Check Markdown files
+    name: Build school-bot
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Send message to telegram
-        uses: appleboy/telegram-action@master
+      - name: Test report
+        run: go test ./... -json > report.json
+      - name: Report
+        uses: becheran/go-testreport@main
         with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            School-bot ${{ github.repository }}
+          input: report.json
       - uses: actions/checkout@master
       - name: Golang linter
         uses: golangci/golangci-lint-action@v6
