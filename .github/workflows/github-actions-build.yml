@@ -25,6 +25,7 @@ jobs:
           version: v1.58
   sendResult:
     needs: ["testReport", "goLinter"]
+    if: always()
     name: Send result build
     runs-on: ubuntu-latest
     steps:
