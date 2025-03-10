@@ -1,0 +1,74 @@
+name: Build school-bot
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+
+jobs:
+  testReport:
+    name: Test report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - uses: actions/checkout@master
+      - name: Run tests
+        run: go install github.com/becheran/go-testreport@main && go mod download && source .env-test &&
+             go test ./... -json | go-testreport -vars="Title:Test Report Linux" >> $GITHUB_STEP_SUMMARY
+  goLinter:
+    name: Golang linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Golang linter
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.61.0
+          args: --config=.golangci.yml
+  buildImage:
+    name: Build image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Build image
+        run: make build_image
+      - uses: actions/checkout@master
+      - name: Push image
+        if: github.ref == 'refs/heads/master'
+        run: make push_image
+        env:
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+  sendResultSuccess:
+    needs: ['testReport', 'goLinter', 'buildImage']
+    if: success()
+    name: Send result build if success
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Send message to telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          disable_web_page_preview: true
+          format: markdown
+          message: |
+            Finish build ${{ github.repository }} job status ☀️
+  sendResultFailure:
+    needs: ['testReport', 'goLinter', 'buildImage']
+    if: failure()
+    name: Send result build if failure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Send message to telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          disable_web_page_preview: true
+          format: markdown
+          message: |
+            Finish build ${{ github.repository }} job status ⚡️
+            Current Workflow URL: [link](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})

@@ -9,34 +9,7 @@ import (
 	"github.com/linuxoid69/school-bot/internal/school"
 )
 
-// func TestMessage_SendGrades(t *testing.T) {
-// 	type fields struct {
-// 		Text   string
-// 		ChatID string
-// 		Token  string
-// 	}
-// 	tests := []struct {
-// 		name    string
-// 		fields  fields
-// 		wantErr bool
-// 	}{
-// 		// TODO: Add test cases.
-// 	}
-// 	for _, tt := range tests {
-// 		t.Run(tt.name, func(t *testing.T) {
-// 			m := &Message{
-// 				Text:   tt.fields.Text,
-// 				ChatID: tt.fields.ChatID,
-// 				Token:  tt.fields.Token,
-// 			}
-// 			if err := m.SendGrades(); (err != nil) != tt.wantErr {
-// 				t.Errorf("Message.SendGrades() error = %v, wantErr %v", err, tt.wantErr)
-// 			}
-// 		})
-// 	}
-// }
-
-func TestCreateMessage(t *testing.T) {
+func TestCreateTodayReport(t *testing.T) {
 	var grades, gradesEmpty school.Grades
 
 	today := time.Now().Format("02.01.2006")
@@ -55,12 +28,12 @@ func TestCreateMessage(t *testing.T) {
 
 	data, err := json.Marshal(grades)
 	if err != nil {
-		fmt.Errorf("Error marshal json")
+		t.Errorf("Error marshal json: %v", err)
 	}
 
 	dataEmpty, err := json.Marshal(gradesEmpty)
 	if err != nil {
-		fmt.Errorf("Error marshal json")
+		t.Errorf("Error marshal json: %v", err)
 	}
 
 	type args struct {
@@ -78,13 +51,13 @@ func TestCreateMessage(t *testing.T) {
 			args: args{
 				data: []byte(data),
 			},
-			want: fmt.Sprintf(`Оценки за %s: 
+			want: fmt.Sprintf(`Оценки за %s:
 ========================================
 
-Урок: Физическая культура 
-Итог: 3 
-Где: Работа на уроке 
-Комментарий:  
+Урок: Физическая культура
+Итог: 3
+Где: Работа на уроке
+Комментарий:
 -------------------------------------------------------`, today),
 			wantErr: false,
 		},
@@ -107,14 +80,15 @@ func TestCreateMessage(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := CreateMessage(tt.args.data)
+			got, err := CreateTodayReport(tt.args.data)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("CreateMessage() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("CreateTodayReport() error = %v, wantErr %v", err, tt.wantErr)
+
 				return
 			}
 
 			if got != tt.want {
-				t.Errorf("CreateMessage() = %v, want %v", got, tt.want)
+				t.Errorf("CreateTodayReport() = %v, want %v", got, tt.want)
 			}
 		})
 	}

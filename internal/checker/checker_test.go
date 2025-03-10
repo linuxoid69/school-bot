@@ -20,25 +20,30 @@ func TestCheckEnvVars(t *testing.T) {
 			name:    "CheckEnvVars",
 			wantErr: false,
 			envVars: map[string]string{
-				"SCHOOL_JWT":            "123",
-				"SCHOOL_URL":            "https://example.com",
-				"SCHOOL_CHAT_ID":        "1234",
-				"SCHOOL_EUCATION_ID":    "1234",
-				"SCHOOL_TOKEN":          "1234",
-				"SCHOOL_CRON_WORK_WEEK": "* * * * *",
-				"SCHOOL_USER_AGENT":     "Mozilla/5.0 (X11; Linux x86_64)",
+				"SCHOOL_HOST":             "https://example.com",
+				"SCHOOL_LOGIN":            "login",
+				"SCHOOL_PASSWORD":         "secret",
+				"SCHOOL_CHAT_ID":          "1234",
+				"SCHOOL_EUCATION_ID":      "1234",
+				"SCHOOL_TELEGRAM_TOKEN":   "1234",
+				"SCHOOL_CRON_WORK_WEEK":   "* * * * *",
+				"SCHOOL_CRON_WEEK_REPORT": "* * * * *",
+				"SCHOOL_USER_AGENT":       "Mozilla/5.0 (X11; Linux x86_64)",
 			},
 		},
 		{
 			name:    "CheckEnvVars not set",
 			wantErr: true,
 			envVars: map[string]string{
-				"SCHOOL_JWT":            "",
-				"SCHOOL_URL":            "",
-				"SCHOOL_CHAT_ID":        "",
-				"SCHOOL_EUCATION_ID":    "",
-				"SCHOOL_TOKEN":          "",
-				"SCHOOL_CRON_WORK_WEEK": "",
+				"SCHOOL_HOST":             "",
+				"SCHOOL_LOGIN":            "",
+				"SCHOOL_PASSWORD":         "",
+				"SCHOOL_CHAT_ID":          "",
+				"SCHOOL_EUCATION_ID":      "",
+				"SCHOOL_TELEGRAM_TOKEN":   "",
+				"SCHOOL_CRON_WORK_WEEK":   "",
+				"SCHOOL_CRON_WEEK_REPORT": "",
+				"SCHOOL_USER_AGENT":       "",
 			},
 		},
 	}
@@ -48,10 +53,19 @@ func TestCheckEnvVars(t *testing.T) {
 
 			err := CheckEnvVars()
 			if (err != nil) != tt.wantErr {
-				t.Errorf("CreateMessage() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("CreateTodayReport() error = %v, wantErr %v", err, tt.wantErr)
 
 				return
 			}
 		})
 	}
 }
+
+// SCHOOL_HOST            # "https://dnevnik2.petersburgedu.ru"  Хост сайта школы
+// SCHOOL_LOGIN           # логин
+// SCHOOL_PASSWORD        # пароль
+// SCHOOL_EUCATION_ID     # id учащегося
+// SCHOOL_TELEGRAM_TOKEN  # телеграм токен
+// SCHOOL_CHAT_ID         # id чата телеграм
+// SCHOOL_CRON_WORK_WEEK  # cron выражение когда будут опрашиваться данные со школы
+// SCHOOL_USER_AGENT      # user-agent для запросов к сайту школы

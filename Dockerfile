@@ -1,13 +1,26 @@
-FROM golang:1.22.5-alpine3.20 as builder
+ARG GOLANG_VERSION
 
-RUN apk update && apk upgrade && apk add --no-cache ca-certificates
+FROM golang:${GOLANG_VERSION}-alpine3.20 as builder
+
+ARG BUILD_CMD
+
+WORKDIR /app
+
+COPY . .
+
+RUN go mod download && sh -c "${BUILD_CMD}"
+
+# RUN apk update && apk upgrade && apk add --no-cache ca-certificates
 
 RUN update-ca-certificates
 
 FROM alpine:3.20
 
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+WORKDIR /app
 
-COPY school /
+RUN apk update && apk upgrade && apk add --no-cache ca-certificates
 
-CMD ["/school"]
+COPY --from=builder /app/school-bot .
+
+CMD ["/app/school-bot"]
+

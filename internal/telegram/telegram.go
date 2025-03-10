@@ -12,6 +12,10 @@ import (
 	"github.com/linuxoid69/school-bot/internal/school"
 )
 
+const (
+	TelegramAPIHost string = "https://api.telegram.org"
+)
+
 type Message struct {
 	Text   string `json:"text"`
 	ChatID string `json:"chat_id"`
@@ -26,7 +30,7 @@ func (m *Message) SendGrades() error {
 
 	req, err := http.NewRequest(
 		http.MethodPost,
-		fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", m.Token),
+		fmt.Sprintf("%s/bot%s/sendMessage", TelegramAPIHost, m.Token),
 		bytes.NewBuffer(payload))
 	if err != nil {
 		return err
@@ -42,7 +46,7 @@ func (m *Message) SendGrades() error {
 	return nil
 }
 
-func CreateMessage(data []byte) (string, error) {
+func CreateTodayReport(data []byte) (string, error) {
 	var grades school.Grades
 
 	if err := json.Unmarshal(data, &grades); err != nil {
@@ -52,7 +56,7 @@ func CreateMessage(data []byte) (string, error) {
 	var sb strings.Builder
 
 	sb.WriteString(fmt.Sprintf(
-		"Оценки за %s: \n%s\n",
+		"Оценки за %s:\n%s\n",
 		time.Now().Format("02.01.2006"),
 		"========================================"))
 
@@ -66,7 +70,7 @@ func CreateMessage(data []byte) (string, error) {
 		}
 
 		_, err := sb.WriteString(
-			fmt.Sprintf("\nУрок: %s \nИтог: %s \nГде: %s \nКомментарий: %s \n%s",
+			fmt.Sprintf("\nУрок: %s\nИтог: %s\nГде: %s\nКомментарий:%s\n%s",
 				item.SubjectName,
 				item.EstimateValueName,
 				item.EstimateTypeName,
@@ -88,6 +92,7 @@ func CreateWeekReport(fromDate, toDate string, data []byte) (string, error) {
 	}
 
 	weekGrades := make(map[string]string)
+
 	for _, item := range grades.Data.Items {
 		if unicode.IsDigit([]rune(item.EstimateValueName)[0]) {
 			weekGrades[item.SubjectName] += item.EstimateValueName + ","

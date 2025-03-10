@@ -1,8 +1,0 @@
-Main:
-  files:
-  - $all
-  - "!$test"
-  allow:
-  - $gostd
-  - github.com/linuxoid69/school-bot/internal/school
-  - github.com/linuxoid69/school-bot/internal/telegram
