@@ -19,5 +19,4 @@ linters:
     - revive
     - typecheck
     - wastedassign
-    # - depguard
-
+    - unused
